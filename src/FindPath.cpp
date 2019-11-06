@@ -1,6 +1,24 @@
 #include <stdio.h>
-#include "OpenBin.h"
+#include <string.h>
+#include "FindPath.h"
 #include "DetourNavMesh.h"
+
+static const int NAVMESHSET_MAGIC = 'M'<<24 | 'S'<<16 | 'E'<<8 | 'T'; //'MSET';
+static const int NAVMESHSET_VERSION = 1;
+
+struct NavMeshSetHeader
+{
+	int magic;
+	int version;
+	int numTiles;
+	dtNavMeshParams params;
+};
+
+struct NavMeshTileHeader
+{
+	dtTileRef tileRef;
+	int dataSize;
+};
 
 dtNavMesh* FindPath::loadBin(const char* path)
 {
@@ -70,4 +88,4 @@ dtNavMesh* FindPath::loadBin(const char* path)
 	fclose(fp);
 
 	return mesh;
-}
+};

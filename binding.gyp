@@ -7,6 +7,7 @@
             ],
             "sources": [
                 './Detour/Source/DetourAlloc.cpp',
+                "./Detour/Source/DetourAssert.cpp",
                 './Detour/Source/DetourCommon.cpp',
                 './Detour/Source/DetourNavMesh.cpp',
                 './/Detour/Source/DetourNavMeshBuilder.cpp',
