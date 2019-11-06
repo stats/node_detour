@@ -1,0 +1,29 @@
+{
+  "namd": "node_detour",
+  "version": "0.1.0",
+  "description": "A node.js addon that implments Detour Pathfinding on a BIN Recast export from recast navigation",
+  "main": "index.js",
+  "scripts": {
+    "install": "node-gyp rebuild"
+  },
+  "private": false,
+  "gypfile": true,
+  "dependencies": {
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stats/node_detour.git"
+  },
+  "keywords": [
+    "recast",
+    "navigations",
+    "navmesh",
+    "detour",
+    "node",
+    "pathfinding",
+    "mesh"
+  ],
+  "author": "Dan Curran",
+  "license": "MIT"
+}
