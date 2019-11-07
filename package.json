@@ -4,11 +4,14 @@
   "description": "A node.js addon that implments Detour Pathfinding on a BIN Recast export from recast navigation",
   "main": "index.js",
   "scripts": {
-    "install": "node-gyp rebuild"
+    "install": "node-gyp rebuild",
+    "test": "node test/test.js",
+    "test:inspect": "node --inspect-brk test/test.js"
   },
   "private": false,
   "gypfile": true,
   "dependencies": {
+    "bindings": "^1.5.0",
     "node-addon-api": "^1.7.1"
   },
   "repository": {

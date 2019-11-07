@@ -32,9 +32,6 @@ Pathfinder::Pathfinder(const Napi::CallbackInfo &info) : Napi::ObjectWrap<Pathfi
 
   int length = info.Length();
 
-  if(length <= 0 || !info[0].IsNumber()) {
-    Napi::TypeError::New(env, "Number expected").ThrowAsJavaScriptException();
-  }
 }
 
 static const int NAVMESHSET_MAGIC = 'M'<<24 | 'S'<<16 | 'E'<<8 | 'T'; //'MSET';
