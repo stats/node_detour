@@ -8,7 +8,9 @@
   },
   "private": false,
   "gypfile": true,
-  "dependencies": {},
+  "dependencies": {
+    "node-addon-api": "^1.7.1"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/stats/node_detour.git"

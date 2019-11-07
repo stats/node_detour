@@ -1,3 +1,7 @@
+#ifndef PATHFINDER_H
+#define PATHFINDER_H
+
+#include <napi.h>
 #include "DetourNavMesh.h"
 
 static const int MAX_POLYS = 256;
@@ -7,9 +11,8 @@ template<class T> inline T rcMin(T a, T b) { return a < b ? a : b; }
 
 template<class T> inline T rcMax(T a, T b) { return a > b ? a : b; }
 
-class FindPath
+class Pathfinder : public Napi::ObjectWrap<Pathfinder>
 {
-protected:
   dtNavMesh* m_navMesh;
 	dtNavMeshQuery* m_navQuery;
   int m_nsmoothPath;
@@ -27,10 +30,19 @@ protected:
 
   dtPolyRef m_polys[MAX_POLYS];
 public:
-  FindPath();
-  virtual ~FindPath();
+  static Napi::Object Init(Napi::Env env, Napi::Object exports);
+  Pathfinder(const Napi::CallbackInfo &info);
 
-  void loadBin(const char* path);
-  void findPath();
-  float getPath();
+  // void loadBin(const char* path);
+  // void findPath();
+  // float getPath();
+
+private:
+  static Napi::FunctionReference constructor;
+
+  void FindPath(const Napi::CallbackInfo& info);
+  void LoadBin(const Napi::CallbackInfo& info);
+  Napi::Value GetPath(const Napi::CallbackInfo& info);
 };
+
+#endif

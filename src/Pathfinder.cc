@@ -1,12 +1,41 @@
+#include <napi.h>
 #include <stdio.h>
 #include <string.h>
-#include "FindPath.h"
+#include "Pathfinder.h"
 #include "DetourAlloc.h"
 #include "DetourCommon.h"
 #include "DetourNavMesh.h"
 #include "DetourNavMeshBuilder.h"
 #include "DetourNavMeshQuery.h"
 #include "DetourNode.h"
+
+Napi::FunctionReference Pathfinder::constructor;
+
+Napi::Object Pathfinder::Init(Napi::Env env, Napi::Object exports) {
+  Napi::HandleScope scope(env);
+
+  Napi::Function func =
+    DefineClass(env, "Pathfinder", {
+                InstanceMethod("FindPath", &Pathfinder::FindPath),
+                InstanceMethod("LoadBin", &Pathfinder::LoadBin),
+								InstanceMethod("GetPath", &Pathfinder::GetPath)});
+    constructor = Napi::Persistent(func);
+    constructor.SuppressDestruct();
+
+    exports.Set("Pathfinder", func);
+    return exports;
+}
+
+Pathfinder::Pathfinder(const Napi::CallbackInfo &info) : Napi::ObjectWrap<Pathfinder>(info) {
+  Napi::Env env = info.Env();
+  Napi::HandleScope scope(env);
+
+  int length = info.Length();
+
+  if(length <= 0 || !info[0].IsNumber()) {
+    Napi::TypeError::New(env, "Number expected").ThrowAsJavaScriptException();
+  }
+}
 
 static const int NAVMESHSET_MAGIC = 'M'<<24 | 'S'<<16 | 'E'<<8 | 'T'; //'MSET';
 static const int NAVMESHSET_VERSION = 1;
@@ -185,18 +214,15 @@ static bool getSteerTarget(dtNavMeshQuery* navQuery, const float* startPos, cons
 	return true;
 }
 
-FindPath::FindPath() {
-
-}
-
-float FindPath::getPath() {
-	return m_smoothPath;
-}
-
-void FindPath::loadBin(const char* path)
+void Pathfinder::LoadBin(const Napi::CallbackInfo& info)
 {
+
+	Napi::Uint8Array arr = info[0].As<Napi::Uint8Array>();
+
+	const char* path = reinterpret_cast<char *>(arr.ArrayBuffer().Data());
+
 	FILE* fp = fopen(path, "rb");
-	if (!fp) return 0;
+	if (!fp) return;
 
 	// Read header.
 	NavMeshSetHeader header;
@@ -204,30 +230,30 @@ void FindPath::loadBin(const char* path)
 	if (readLen != 1)
 	{
 		fclose(fp);
-		return 0;
+		return;
 	}
 	if (header.magic != NAVMESHSET_MAGIC)
 	{
 		fclose(fp);
-		return 0;
+		return;
 	}
 	if (header.version != NAVMESHSET_VERSION)
 	{
 		fclose(fp);
-		return 0;
+		return;
 	}
 
 	dtNavMesh* mesh = dtAllocNavMesh();
 	if (!mesh)
 	{
 		fclose(fp);
-		return 0;
+		return;
 	}
 	dtStatus status = mesh->init(&header.params);
 	if (dtStatusFailed(status))
 	{
 		fclose(fp);
-		return 0;
+		return;
 	}
 
 	// Read tiles.
@@ -238,7 +264,7 @@ void FindPath::loadBin(const char* path)
 		if (readLen != 1)
 		{
 			fclose(fp);
-			return 0;
+			return;
 		}
 
 		if (!tileHeader.tileRef || !tileHeader.dataSize)
@@ -252,7 +278,7 @@ void FindPath::loadBin(const char* path)
 		{
 			dtFree(data);
 			fclose(fp);
-			return 0;
+			return;
 		}
 
 		mesh->addTile(data, tileHeader.dataSize, DT_TILE_FREE_DATA, tileHeader.tileRef, 0);
@@ -263,8 +289,7 @@ void FindPath::loadBin(const char* path)
 	m_navMesh = mesh;
 };
 
-void FindPath::findPath()
-{
+void Pathfinder::FindPath(const Napi::CallbackInfo& info) {
 
 	if (!m_navMesh)
 		return;
@@ -423,4 +448,13 @@ void FindPath::findPath()
 		m_npolys = 0;
 		m_nsmoothPath = 0;
 	}
+}
+
+Napi::Value Pathfinder::GetPath(const Napi::CallbackInfo& info) {
+	Napi::Array smoothPathArray = Napi::Array::New(info.Env(), m_nsmoothPath*3);
+	int i = 0;
+	for(i = 0; i < m_nsmoothPath*3; i++) {
+		smoothPathArray[i] = m_smoothPath[i];
+	}
+  return smoothPathArray;
 }
