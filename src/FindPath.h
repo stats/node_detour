@@ -30,6 +30,7 @@ public:
   FindPath();
   virtual ~FindPath();
 
-  dtNavMesh* loadBin(const char* path);
+  void loadBin(const char* path);
   void findPath();
+  float getPath();
 };

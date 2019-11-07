@@ -185,7 +185,15 @@ static bool getSteerTarget(dtNavMeshQuery* navQuery, const float* startPos, cons
 	return true;
 }
 
-dtNavMesh* FindPath::loadBin(const char* path)
+FindPath::FindPath() {
+
+}
+
+float FindPath::getPath() {
+	return m_smoothPath;
+}
+
+void FindPath::loadBin(const char* path)
 {
 	FILE* fp = fopen(path, "rb");
 	if (!fp) return 0;
@@ -252,7 +260,7 @@ dtNavMesh* FindPath::loadBin(const char* path)
 
 	fclose(fp);
 
-	return mesh;
+	m_navMesh = mesh;
 };
 
 void FindPath::findPath()

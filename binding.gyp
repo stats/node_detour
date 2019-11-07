@@ -13,7 +13,9 @@
                 './/Detour/Source/DetourNavMeshBuilder.cpp',
                 './Detour/Source/DetourNavMeshQuery.cpp',
                 './Detour/Source/DetourNode.cpp',
-                './src/FindPath.cpp'
+                './src/FindPath.cc',
+                './src/FindPathWrap.cc',
+                './src/addon.cc'
             ]
         }
     ]
