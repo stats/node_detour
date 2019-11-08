@@ -6,6 +6,6 @@ var pathfinder = new Pathfinder();
 
 console.log(pathfinder);
 
-pathfinder.loadBin('./test.js');
+var result = pathfinder.loadBin('C:/Users/Currand/Desktop/node_detour/test/tutorial.bin');
 
-console.log('Loaded the Bin');
+console.log('Loaded the Bin. Return code: ', result);

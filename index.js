@@ -8,7 +8,7 @@ function Pathfinder() {
 }
 
 Pathfinder.prototype.loadBin = function(path) {
-  this.pathfinder.LoadBin(path);
+  return this.pathfinder.LoadBin(path);
 }
 
 Pathfinder.prototype.findPath = function(x1, y1, z1, x2, y2, z2) {

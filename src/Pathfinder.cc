@@ -1,6 +1,7 @@
 #include <napi.h>
 #include <stdio.h>
 #include <string.h>
+#include <iostream>
 #include "Pathfinder.h"
 #include "DetourAlloc.h"
 #include "DetourCommon.h"
@@ -211,46 +212,45 @@ static bool getSteerTarget(dtNavMeshQuery* navQuery, const float* startPos, cons
 	return true;
 }
 
-void Pathfinder::LoadBin(const Napi::CallbackInfo& info)
+Napi::Value Pathfinder::LoadBin(const Napi::CallbackInfo& info)
 {
 
-	Napi::Uint8Array arr = info[0].As<Napi::Uint8Array>();
-
-	const char* path = reinterpret_cast<char *>(arr.ArrayBuffer().Data());
+  const char* path = info[0].As<Napi::String>().Utf8Value().c_str();
 
 	FILE* fp = fopen(path, "rb");
-	if (!fp) return;
+	if (!fp) return Napi::Number::New(info.Env(), 2);
 
 	// Read header.
 	NavMeshSetHeader header;
 	size_t readLen = fread(&header, sizeof(NavMeshSetHeader), 1, fp);
+
 	if (readLen != 1)
 	{
 		fclose(fp);
-		return;
+		return Napi::Number::New(info.Env(), 3);
 	}
 	if (header.magic != NAVMESHSET_MAGIC)
 	{
 		fclose(fp);
-		return;
+		return Napi::Number::New(info.Env(), 4);
 	}
 	if (header.version != NAVMESHSET_VERSION)
 	{
 		fclose(fp);
-		return;
+		return Napi::Number::New(info.Env(), 5);
 	}
 
 	dtNavMesh* mesh = dtAllocNavMesh();
 	if (!mesh)
 	{
 		fclose(fp);
-		return;
+		return Napi::Number::New(info.Env(), 6);
 	}
 	dtStatus status = mesh->init(&header.params);
 	if (dtStatusFailed(status))
 	{
 		fclose(fp);
-		return;
+		return Napi::Number::New(info.Env(), 7);
 	}
 
 	// Read tiles.
@@ -261,7 +261,7 @@ void Pathfinder::LoadBin(const Napi::CallbackInfo& info)
 		if (readLen != 1)
 		{
 			fclose(fp);
-			return;
+			return Napi::Number::New(info.Env(), 8);
 		}
 
 		if (!tileHeader.tileRef || !tileHeader.dataSize)
@@ -275,7 +275,7 @@ void Pathfinder::LoadBin(const Napi::CallbackInfo& info)
 		{
 			dtFree(data);
 			fclose(fp);
-			return;
+			return Napi::Number::New(info.Env(), 9);
 		}
 
 		mesh->addTile(data, tileHeader.dataSize, DT_TILE_FREE_DATA, tileHeader.tileRef, 0);
@@ -284,6 +284,8 @@ void Pathfinder::LoadBin(const Napi::CallbackInfo& info)
 	fclose(fp);
 
 	m_navMesh = mesh;
+
+  return Napi::Number::New(info.Env(), 1);
 };
 
 void Pathfinder::FindPath(const Napi::CallbackInfo& info) {

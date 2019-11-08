@@ -41,7 +41,7 @@ private:
   static Napi::FunctionReference constructor;
 
   void FindPath(const Napi::CallbackInfo& info);
-  void LoadBin(const Napi::CallbackInfo& info);
+  Napi::Value LoadBin(const Napi::CallbackInfo& info);
   Napi::Value GetPath(const Napi::CallbackInfo& info);
 };
 
