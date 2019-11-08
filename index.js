@@ -12,11 +12,11 @@ Pathfinder.prototype.loadBin = function(path) {
 }
 
 Pathfinder.prototype.findPath = function(x1, y1, z1, x2, y2, z2) {
-
+  return this.pathfinder.FindPath(x1, y1, z1, x2, y2, z2);
 }
 
-Pathfinder.prototype.getPath = function() {
-  return this.pathfinder.getPath();
+Pathfinder.prototype.findRandomPoint = function() {
+  return this.pathfinder.FindRandomPoint();
 }
 
 module.exports = Pathfinder;
