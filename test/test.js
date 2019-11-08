@@ -1,35 +1,53 @@
-var Pathfinder = require('../index.js');
-var pathfinder = new Pathfinder();
+var NodeDetour = require('../index.js');
+var detour = new NodeDetour();
 
 var result;
 
-result = pathfinder.loadBin('C:/Users/Currand/Desktop/node_detour/test/tutorial.bin');
+result = detour.loadBin('C:/Users/Currand/Desktop/node_detour/test/tutorial.bin');
 
 console.log('Loaded the Bin. Return code: ', result);
 
-result = pathfinder.findPath(0, 0, 0, 1, 0, 0);
+var p1 = detour.findRandomPoint();
+var p2 = detour.findRandomPoint();
 
-console.log('FindPath: ', result);
+console.log('FindRandomPoint: ', p1, p2);
 
-result = pathfinder.findRandomPoint();
+var path1 = detour.findPath(p1, p2);
 
-console.log('FindRandomPoint: ', result);
+console.log('Path Results Length', path1.length);
+
+var path2 = detour.findPath2d(p1, p2);
+
+console.log('Path Results Length', path2.length);
 
 console.time('10000-randPoints');
-for(var i = 0; i < 10000; i++) {
-  p1 = pathfinder.findRandomPoint();
-  //console.log('Path: ', "x1:", p1[0], "y1:", p1[1], "z1:", p1[2], "x2:", p2[0], "y2", p2[1], "z2", p2[2], "Length:", result.length);
+for(var i = 0; i < 1000; i++) {
+  p1 = detour.findRandomPoint();
 }
 console.timeEnd('10000-randPoints')
 
 
-console.time('10000-findingPaths');
-
+console.time('10000-findPath');
+var path_length = 0;
 for(var i = 0; i < 10000; i++) {
-  p1 = pathfinder.findRandomPoint();
-  p2 = pathfinder.findRandomPoint();
-  result = pathfinder.findPath(p1[0],p1[1],p1[2],p2[0],p2[1],p2[2]);
-  //console.log('Path: ', "x1:", p1[0], "y1:", p1[1], "z1:", p1[2], "x2:", p2[0], "y2", p2[1], "z2", p2[2], "Length:", result.length);
+  p1 = detour.findRandomPoint();
+  p2 = detour.findRandomPoint();
+  result = detour.findPath(p1, p2);
+  path_length += result.length;
 }
 
-console.timeEnd('10000-findingPaths');
+console.timeEnd('10000-findPath');
+console.log('Average Path Length: ', path_length / 10000);
+
+console.time('10000-findPath2d');
+
+path_length = 0;
+for(var i = 0; i < 10000; i++) {
+  p1 = detour.findRandomPoint();
+  p2 = detour.findRandomPoint();
+  result = detour.findPath2d(p1, p2);
+  path_length += result.length;
+}
+
+console.timeEnd('10000-findPath2d');
+console.log('Average Path Length: ', path_length / 10000);
