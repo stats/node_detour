@@ -1,8 +1,10 @@
 # Node Detour
 
-A JavaScript library for pathfinding on a [Recast & Detour c++ library](https::/github.com/memononen/recastnavigation) generated binary file.
+A JavaScript library for 3D pathfinding on a [Recast & Detour c++ library](https::/github.com/memononen/recastnavigation) generated binary file.
 
-This libary finds a Smooth Path across a navigation mesh.
+This is a node-gyp addon bundle of the Detour pathfinding script. Pathfinding is frequently used and can be a bottleneck when running games. Taking advantage of the performance boost offered by a native c++ implementation is advantageous.
+
+This library outputs a smoothed path for moving an agent across 3D space.
 
 # Install
 npm install node_detour
