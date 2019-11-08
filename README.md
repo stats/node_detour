@@ -1,13 +1,13 @@
-#Node Detour
+# Node Detour
 
 A JavaScript library for pathfinding on a [Recast & Detour c++ library](https::/github.com/memononen/recastnavigation) generated binary file.
 
 This libary finds a Smooth Path across a navigation mesh.
 
-#Install
+# Install
 npm install node_detour
 
-#Usage
+# Usage
 The workflow for using this is to create a [Recast & Detour](https::/github.com/memononen/recastnavigation) navigation mesh and export it using the .bin format.
 
 My workflow involves building the RecastDemo application and using that to build my mesh and then exporting it using the save function. This will result in a new bin file being created in the RecastDemo folder which can be used in your nodejs application.
@@ -32,7 +32,7 @@ var path = detour.findPath2d(p1, p2);
 //returns a 2-dimensional array of of points [ [x,y,z], [x,y,z] ]
 ```
 
-#Test
+# Test
 npm run test
 
 The test results will also show benchmarks results for how long pathfinding takes. On an i5-7200U @ 2.50 GHz with 8 GB of ram it takes approximately 0.7 milliseconds to return a smooth path for paths averaging 400 waypoints.
