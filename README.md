@@ -19,7 +19,7 @@ var NodeDetour = require('node_detour');
 var detour = new NodeDetour();
 
 var loadResult = detour.load('/full/path/to/mymap.bin');
-// Returns a 1 on success or an error string on failure
+// Returns a map {error: false} or {error: true, message: "Error message"}
 
 var p1 = detour.findRandomPoint();
 // Returns an array with 3 values for x, y, z position
@@ -42,3 +42,7 @@ npm run test
 i5-7200U @ 2.50GHz with 8 GB of RAM: ~0.7 milliseconds to return a smooth path for paths averaging 400 waypoints
 
 i7-2760QM @ 2.40GHz with 8 GB of RAM: ~0.8 milliseconds to return a smooth path for paths averagin 400 waypoints
+
+# Typescript
+
+There is an index.d.ts file included with this build. It should be usable by typescript.
