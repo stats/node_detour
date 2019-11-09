@@ -1,11 +1,9 @@
 var NodeDetour = require('../index.js');
 var detour = new NodeDetour();
 
-let file = 'test/tutorial.bin'
+var file = 'test/tutorial.bin'
 
-var result;
-
-result = detour.loadBin(file);
+var result = detour.loadBin(file);
 
 if( result != 1) {
   console.log('Loading the binary file: failed');
