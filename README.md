@@ -37,7 +37,7 @@ var path = detour.findPath2d(p1, p2);
 # Test
 npm run test
 
-# benchmarks
+# Benchmarks
 
 i5-7200U @ 2.50GHz with 8 GB of RAM: ~0.7 milliseconds to return a smooth path for paths averaging 400 waypoints
 
