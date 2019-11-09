@@ -10,7 +10,7 @@ This library outputs a smoothed path for moving an agent across 3D space.
 npm install node_detour
 
 # Usage
-The workflow for using this is to create a [Recast & Detour](https::/github.com/memononen/recastnavigation) navigation mesh and export it using the .bin format.
+The workflow for using this is to create a [Recast & Detour](https://github.com/memononen/recastnavigation) navigation mesh and export it using the .bin format.
 
 My workflow involves building the RecastDemo application and using that to build my mesh and then exporting it using the save function. This will result in a new bin file being created in the RecastDemo folder which can be used in your nodejs application.
 
