@@ -37,4 +37,7 @@ var path = detour.findPath2d(p1, p2);
 # Test
 npm run test
 
-The test results will also show benchmarks results for how long pathfinding takes. On an i5-7200U @ 2.50 GHz with 8 GB of ram it takes approximately 0.7 milliseconds to return a smooth path for paths averaging 400 waypoints.
+# benchmarks
+
+i5-7200U @ 2.50GHz with 8 GB of RAM: ~0.7 milliseconds to return a smooth path for paths averaging 400 waypoints
+i7-2760QM @ 2.40GHz with 8 GB of RAM: ~0.8 milliseconds to return a smooth path for paths averagin 400 waypoints

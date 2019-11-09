@@ -240,9 +240,9 @@ static bool getSteerTarget(dtNavMeshQuery* navQuery, const float* startPos, cons
 
 Napi::Value Pathfinder::LoadBin(const Napi::CallbackInfo& info)
 {
-  const char* path = info[0].As<Napi::String>().Utf8Value().c_str();
+  std::string path = info[0].As<Napi::String>().Utf8Value();
 
-	FILE* fp = fopen(path, "rb");
+	FILE* fp = fopen(path.c_str(), "rb");
 	if (!fp) {
     return Napi::Number::New(info.Env(), 2);
   }
