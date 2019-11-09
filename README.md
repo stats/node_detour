@@ -42,3 +42,9 @@ npm run test
 i5-7200U @ 2.50GHz with 8 GB of RAM: ~0.7 milliseconds to return a smooth path for paths averaging 400 waypoints
 
 i7-2760QM @ 2.40GHz with 8 GB of RAM: ~0.8 milliseconds to return a smooth path for paths averagin 400 waypoints
+
+# Unity
+
+This class is being used on the server side for a Unity project.
+In order to make pathfinding work in that environment you will need to flip the sign on the x component for the player input.
+Other font end environments may require you to modify the coordinate system in different ways to ensure the paths are handled in the same coordinate space.
