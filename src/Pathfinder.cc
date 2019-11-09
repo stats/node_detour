@@ -242,8 +242,10 @@ Napi::Value Pathfinder::LoadBin(const Napi::CallbackInfo& info)
 
   const char* path = info[0].As<Napi::String>().Utf8Value().c_str();
 
+  std::cout << "Path: " << path << "\n";
+
 	FILE* fp = fopen(path, "rb");
-	if (!fp) return Napi::Number::New(info.Env(), 0);
+	if (!fp) return Napi::Number::New(info.Env(), 2);
 
 	// Read header.
 	NavMeshSetHeader header;
@@ -252,30 +254,30 @@ Napi::Value Pathfinder::LoadBin(const Napi::CallbackInfo& info)
 	if (readLen != 1)
 	{
 		fclose(fp);
-		return Napi::Number::New(info.Env(), 0);
+		return Napi::Number::New(info.Env(), 3);
 	}
 	if (header.magic != NAVMESHSET_MAGIC)
 	{
 		fclose(fp);
-		return Napi::Number::New(info.Env(), 0);
+		return Napi::Number::New(info.Env(), 4);
 	}
 	if (header.version != NAVMESHSET_VERSION)
 	{
 		fclose(fp);
-		return Napi::Number::New(info.Env(), 0);
+		return Napi::Number::New(info.Env(), 5);
 	}
 
 	dtNavMesh* mesh = dtAllocNavMesh();
 	if (!mesh)
 	{
 		fclose(fp);
-		return Napi::Number::New(info.Env(), 0);
+		return Napi::Number::New(info.Env(), 6);
 	}
 	dtStatus status = mesh->init(&header.params);
 	if (dtStatusFailed(status))
 	{
 		fclose(fp);
-		return Napi::Number::New(info.Env(), 0);
+		return Napi::Number::New(info.Env(), 7);
 	}
 
 	// Read tiles.
@@ -286,7 +288,7 @@ Napi::Value Pathfinder::LoadBin(const Napi::CallbackInfo& info)
 		if (readLen != 1)
 		{
 			fclose(fp);
-			return Napi::Number::New(info.Env(), 0);
+			return Napi::Number::New(info.Env(), 8);
 		}
 
 		if (!tileHeader.tileRef || !tileHeader.dataSize)
@@ -300,7 +302,7 @@ Napi::Value Pathfinder::LoadBin(const Napi::CallbackInfo& info)
 		{
 			dtFree(data);
 			fclose(fp);
-			return Napi::Number::New(info.Env(), 0);
+			return Napi::Number::New(info.Env(), 9);
 		}
 
 		mesh->addTile(data, tileHeader.dataSize, DT_TILE_FREE_DATA, tileHeader.tileRef, 0);

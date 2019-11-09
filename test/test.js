@@ -3,7 +3,7 @@ var detour = new NodeDetour();
 
 var result;
 
-result = detour.loadBin('C:/Users/Currand/Desktop/node_detour/test/tutorial.bin');
+result = detour.loadBin('/Users/Dan/Desktop/node_detour/test/tutorial.bin');
 
 console.log('Loaded the Bin. Return code: ', result);
 

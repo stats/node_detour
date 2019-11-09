@@ -1,14 +1,24 @@
 'use strict';
 
 function NodeDetour() {
-  this.addon = require('bindings')('addon');
-  console.log(this.addon);
-  this.pathfinder = new this.addon.Pathfinder();
+   var addon = require('bindings')('addon');
+  this.pathfinder = new addon.Pathfinder();
 
 }
 
 NodeDetour.prototype.loadBin = function(path) {
-  return this.pathfinder.LoadBin(path);
+  var result = this.pathfinder.LoadBin(path);
+  switch(result) {
+    case 1: return 1;
+    case 2: return "Error: Could not open file";
+    case 3: return "Error: Could not read header";
+    case 4: return "Error: Header magic value incorrect";
+    case 5: return "Error: Header version incorrect";
+    case 6: return "Error: Could not allocate mesh object";
+    case 7: return "Error: Could not initialize mesh";
+    case 8: return "Error: Could not open tile header";
+    case 9: return "Error: Could not read tile header data";
+  }
 }
 
 NodeDetour.prototype.findPath = function(p1, p2) {
