@@ -1,6 +1,4 @@
-export = NodeDetour;
-
-declare class NodeDetour {
+export declare class NodeDetour {
   constructor();
 
   loadBin(path:string):any;
