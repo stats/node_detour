@@ -1,4 +1,4 @@
-var NodeDetour = require('../index.js');
+var NodeDetour = require('../');
 var detour = new NodeDetour();
 
 var file = 'test/does_not_exist.bin';

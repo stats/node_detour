@@ -42,7 +42,3 @@ npm run test
 i5-7200U @ 2.50GHz with 8 GB of RAM: ~0.7 milliseconds to return a smooth path for paths averaging 400 waypoints
 
 i7-2760QM @ 2.40GHz with 8 GB of RAM: ~0.8 milliseconds to return a smooth path for paths averagin 400 waypoints
-
-# Typescript
-
-There is an index.d.ts file included with this build. It should be usable by typescript.

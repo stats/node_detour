@@ -3,7 +3,6 @@
   "version": "0.1.3",
   "description": "A node.js addon that implments Detour Pathfinding on a BIN Recast export from recast navigation",
   "main": "index.js",
-  "types": "index.d.ts",
   "scripts": {
     "install": "node-gyp rebuild",
     "test": "node test/test.js",
