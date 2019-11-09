@@ -36,6 +36,7 @@ Pathfinder::Pathfinder(const Napi::CallbackInfo &info) : Napi::ObjectWrap<Pathfi
   m_filter.setIncludeFlags(SAMPLE_POLYFLAGS_ALL ^ SAMPLE_POLYFLAGS_DISABLED);
   m_filter.setExcludeFlags(0);
 
+  m_navMesh = 0;
   m_navQuery = dtAllocNavMeshQuery();
 
   if (m_navQuery)
@@ -239,13 +240,12 @@ static bool getSteerTarget(dtNavMeshQuery* navQuery, const float* startPos, cons
 
 Napi::Value Pathfinder::LoadBin(const Napi::CallbackInfo& info)
 {
-
   const char* path = info[0].As<Napi::String>().Utf8Value().c_str();
 
-  std::cout << "Path: " << path << "\n";
-
 	FILE* fp = fopen(path, "rb");
-	if (!fp) return Napi::Number::New(info.Env(), 2);
+	if (!fp) {
+    return Napi::Number::New(info.Env(), 2);
+  }
 
 	// Read header.
 	NavMeshSetHeader header;
@@ -317,10 +317,8 @@ Napi::Value Pathfinder::LoadBin(const Napi::CallbackInfo& info)
 };
 
 Napi::Value Pathfinder::FindPath(const Napi::CallbackInfo& info) {
-  //std::cout << "Starting FindPath:"  << m_navMesh << "\n";
 
 	if (!m_navMesh) {
-    //std::cout << "Do not have a navigation mesh. Returning.\n";
 		return Napi::Number::New(info.Env(), 0);;
   }
 
@@ -332,18 +330,8 @@ Napi::Value Pathfinder::FindPath(const Napi::CallbackInfo& info) {
   m_epos[1] = info[4].As<Napi::Number>().FloatValue();
   m_epos[2] = info[5].As<Napi::Number>().FloatValue();
 
-  //std::cout << "start: " << m_spos[0] << ", " << m_spos[1] << ", " << m_spos[2] << "\n";
-  //std::cout << "  end: " << m_epos[0] << ", " << m_epos[1] << ", " << m_epos[2] << "\n";
-
-  //std::cout << "m_navQuery: " << m_navQuery << "\n";
-
   m_navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
   m_navQuery->findNearestPoly(m_epos, m_polyPickExt, &m_filter, &m_endRef, 0);
-
-
-  //std::cout << "Got past finding nearest poly stuff.\n";
-  //std::cout << "start ref: " << m_startRef << " end ref: " << m_endRef << "\n";
-
 
 	int m_pathIterNum = 0;
 	if (m_startRef && m_endRef)
@@ -356,7 +344,6 @@ Napi::Value Pathfinder::FindPath(const Napi::CallbackInfo& info) {
 
 		if (m_npolys)
 		{
-      //std::cout << "Got a m_npolys\n";
 			// Iterate over the path to find smooth path on the detail mesh surface.
 			dtPolyRef polys[MAX_POLYS];
 			memcpy(polys, m_polys, sizeof(dtPolyRef)*m_npolys);
@@ -499,6 +486,11 @@ Napi::Value Pathfinder::FindPath(const Napi::CallbackInfo& info) {
 
 Napi::Value Pathfinder::FindRandomPoint(const Napi::CallbackInfo& info)
 {
+
+  if (!m_navMesh) {
+		return Napi::Number::New(info.Env(), 0);;
+  }
+
   float rnd[3];
   dtPolyRef ref;
   dtStatus status = m_navQuery->findRandomPoint(&m_filter, frand, &ref, rnd);

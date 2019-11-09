@@ -1,53 +1,72 @@
 var NodeDetour = require('../index.js');
 var detour = new NodeDetour();
 
+let file = 'test/tutorial.bin'
+
 var result;
 
-result = detour.loadBin('/Users/Dan/Desktop/node_detour/test/tutorial.bin');
+result = detour.loadBin(file);
 
-console.log('Loaded the Bin. Return code: ', result);
+if( result != 1) {
+  console.log('Loading the binary file: failed');
+  console.log(result);
 
-var p1 = detour.findRandomPoint();
-var p2 = detour.findRandomPoint();
+  var fs = require('fs');
+  var path = require('path');
 
-console.log('FindRandomPoint: ', p1, p2);
+  resolved = path.resolve(file);
 
-var path1 = detour.findPath(p1, p2);
+  if(fs.existsSync(resolved)) {
+    console.log('File', resolved, ': exists');
+  } else {
+    consoel.log('File', resolved, ': not found');
+  }
 
-console.log('Path Results Length', path1.length);
+} else {
+  console.log('Loaded the binary file: success ');
 
-var path2 = detour.findPath2d(p1, p2);
+  var p1 = detour.findRandomPoint();
+  var p2 = detour.findRandomPoint();
 
-console.log('Path Results Length', path2.length);
+  console.log('FindRandomPoint:', p1, p2);
 
-console.time('10000-randPoints');
-for(var i = 0; i < 1000; i++) {
-  p1 = detour.findRandomPoint();
+  var path1 = detour.findPath(p1, p2);
+
+  console.log('Path Results Length:', path1.length);
+
+  var path2 = detour.findPath2d(p1, p2);
+
+  console.log('Path Results Length:', path2.length);
+
+  console.time('10000-randPoints');
+  for(var i = 0; i < 1000; i++) {
+    p1 = detour.findRandomPoint();
+  }
+  console.timeEnd('10000-randPoints')
+
+
+  console.time('10000-findPath');
+  var path_length = 0;
+  for(var i = 0; i < 10000; i++) {
+    p1 = detour.findRandomPoint();
+    p2 = detour.findRandomPoint();
+    result = detour.findPath(p1, p2);
+    path_length += result.length;
+  }
+
+  console.timeEnd('10000-findPath');
+  console.log('Average Path Length:', path_length / 10000);
+
+  console.time('10000-findPath2d');
+
+  path_length = 0;
+  for(var i = 0; i < 10000; i++) {
+    p1 = detour.findRandomPoint();
+    p2 = detour.findRandomPoint();
+    result = detour.findPath2d(p1, p2);
+    path_length += result.length;
+  }
+
+  console.timeEnd('10000-findPath2d');
+  console.log('Average Path Length:', path_length / 10000);
 }
-console.timeEnd('10000-randPoints')
-
-
-console.time('10000-findPath');
-var path_length = 0;
-for(var i = 0; i < 10000; i++) {
-  p1 = detour.findRandomPoint();
-  p2 = detour.findRandomPoint();
-  result = detour.findPath(p1, p2);
-  path_length += result.length;
-}
-
-console.timeEnd('10000-findPath');
-console.log('Average Path Length: ', path_length / 10000);
-
-console.time('10000-findPath2d');
-
-path_length = 0;
-for(var i = 0; i < 10000; i++) {
-  p1 = detour.findRandomPoint();
-  p2 = detour.findRandomPoint();
-  result = detour.findPath2d(p1, p2);
-  path_length += result.length;
-}
-
-console.timeEnd('10000-findPath2d');
-console.log('Average Path Length: ', path_length / 10000);
