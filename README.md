@@ -19,7 +19,7 @@ var NodeDetour = require('node_detour');
 var detour = new NodeDetour();
 
 var loadResult = detour.load('/full/path/to/mymap.bin');
-// Returns a 0 on failure a 1 on success
+// Returns a 1 on success or an error string on failure
 
 var p1 = detour.findRandomPoint();
 // Returns an array with 3 values for x, y, z position
