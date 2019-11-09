@@ -1,3 +1,9 @@
+declare var node_detour:NodeDetour;
+
+declare module "node_detour" {
+  export = node_detour;
+}
+
 export declare class NodeDetour {
   constructor();
 
