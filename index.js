@@ -6,8 +6,10 @@ function NodeDetour() {
 
 }
 
-NodeDetour.prototype.loadBin = function(path) {
-  var result = this.pathfinder.LoadBin(path);
+NodeDetour.prototype.loadBin = function(p) {
+  const path = require('path');
+  var full_path = path.resolve(p);
+  var result = this.pathfinder.LoadBin(full_path);
   switch(result) {
     case 1: return 1;
     case 2: return "Error: Could not open file";
