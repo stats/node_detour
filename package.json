@@ -1,6 +1,6 @@
 {
   "name": "node_detour",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A node.js addon that implments Detour Pathfinding on a BIN Recast export from recast navigation",
   "main": "index.js",
   "scripts": {
