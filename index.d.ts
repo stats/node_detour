@@ -1,3 +1,5 @@
+export = NodeDetour;
+
 declare class NodeDetour {
   constructor();
 
